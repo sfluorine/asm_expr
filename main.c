@@ -177,7 +177,7 @@ int main() {
     compiler_t compiler;
     compiler_init(&compiler);
 
-    expression_t* root = expression_make('-');
+    expression_t* root = expression_make('+');
 
     expression_t* lhs = expression_make('+');
 
@@ -195,7 +195,12 @@ int main() {
 
     expression_t* rhs_inner_rhs = expression_make('+');
     rhs_inner_rhs->lhs = expression_make(1);
-    rhs_inner_rhs->rhs = expression_make(2);
+
+    expression_t* ptr = expression_make('/');
+    ptr->lhs = expression_make(10);
+    ptr->rhs = expression_make(2);
+
+    rhs_inner_rhs->rhs = ptr;
 
     rhs->rhs = rhs_inner_rhs;
 
