@@ -85,6 +85,12 @@ void codegen_expr(compiler_t* compiler, expression_t* expr) {
             if (is_value(expr->lhs) && !is_value(expr->rhs)) {
                 codegen_expr(compiler, expr->rhs);
                 codegen_expr(compiler, expr->lhs);
+
+                const char* flu = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg) - 1));
+                const char* lu  = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg)));
+
+                printf("xchg %s, %s\n", get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg) - 1)), get_reg_from_char(get_reg_from_index(compiler->last_used_reg)));
+
             } else {
                 codegen_expr(compiler, expr->lhs);
                 codegen_expr(compiler, expr->rhs);
@@ -97,6 +103,11 @@ void codegen_expr(compiler_t* compiler, expression_t* expr) {
             if (is_value(expr->lhs) && !is_value(expr->rhs)) {
                 codegen_expr(compiler, expr->rhs);
                 codegen_expr(compiler, expr->lhs);
+
+                const char* flu = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg) - 1));
+                const char* lu  = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg)));
+
+                printf("xchg %s, %s\n", flu, lu);
             } else {
                 codegen_expr(compiler, expr->lhs);
                 codegen_expr(compiler, expr->rhs);
@@ -109,6 +120,11 @@ void codegen_expr(compiler_t* compiler, expression_t* expr) {
             if (is_value(expr->lhs) && !is_value(expr->rhs)) {
                 codegen_expr(compiler, expr->rhs);
                 codegen_expr(compiler, expr->lhs);
+
+                const char* flu = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg) - 1));
+                const char* lu  = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg)));
+
+                printf("xchg %s, %s\n", flu, lu);
             } else {
                 codegen_expr(compiler, expr->lhs);
                 codegen_expr(compiler, expr->rhs);
@@ -121,12 +137,17 @@ void codegen_expr(compiler_t* compiler, expression_t* expr) {
             if (is_value(expr->lhs) && !is_value(expr->rhs)) {
                 codegen_expr(compiler, expr->rhs);
                 codegen_expr(compiler, expr->lhs);
+
+                const char* flu = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg) - 1));
+                const char* lu  = get_reg_from_char(get_reg_from_index(get_index_from_reg(compiler->last_used_reg)));
+
+                printf("xchg %s, %s\n", flu, lu);
             } else {
                 codegen_expr(compiler, expr->lhs);
                 codegen_expr(compiler, expr->rhs);
             }
 
-            if (get_index_from_reg(compiler->last_used_reg) > 0) {
+            if (get_index_from_reg(compiler->last_used_reg) > 2) {
                 printf("push rax\n");
                 CODEGEN_OP("div");
                 printf("mov rdx, rax\n");
@@ -171,7 +192,12 @@ int main() {
 
     expression_t* rhs = expression_make('/');
     rhs->lhs = expression_make(6);
-    rhs->rhs = expression_make(2);
+
+    expression_t* rhs_inner_rhs = expression_make('+');
+    rhs_inner_rhs->lhs = expression_make(1);
+    rhs_inner_rhs->rhs = expression_make(2);
+
+    rhs->rhs = rhs_inner_rhs;
 
     root->lhs = lhs;
     root->rhs = rhs;
